@@ -5,7 +5,7 @@ const multer  = require('multer')
 const path = require('path');
 
 
-class UserController{
+class WebAuthController{
 
     static profileStorage = multer.diskStorage({
         destination: function (req, file, cb) {
@@ -17,57 +17,51 @@ class UserController{
         }
     });
 
-    static profileUpload = multer({ storage: UserController.profileStorage});
+    static profileUpload = multer({ storage: WebAuthController.profileStorage});
+
+    static async viewLogin(req, res){
+        res.render('login.ejs');
+    }
+
+    static async viewRegister(req, res){
+        res.render('register.ejs');
+    }
 
     static async register(req, res){
         const saltRounds = 10;
         bcrypt.genSalt(saltRounds, function(err, salt) {
             if(!err){
-
                 bcrypt.hash(req.body.password, salt, async function(err, hash) {
-
-                    const response = await UploadToServer();//https://..../profile.png
-
                     const user = new User({
-                        profile: response,
                         name: req.body.name,
                         email: req.body.email,
                         password: hash
                     });
                     
-            
                     const isSave = await user.save();
                     if(isSave){
-                        res.send(user);
+                        res.redirect('login');
                     }
-
                 });
             }
         });
     }
 
     static async login(req, res){
+        
         const user = await User.findOne({ email: req.body.email });
+
         if(user){
             bcrypt.compare(req.body.password, user.password, function(err, result) {
-
-                var token = jwt.sign({
-                    id: user._id,
-                    name: user.name
-                }, '123!@#ABC');
-
+            
                 if(result){
-                    res.send({
-                        status: "SUCCESS",
-                        message: "Login successful",
-                        token: token
-                    });
+                    req.session.auth = true;
+                    req.session.name = user.name;
+                    req.session.userId = user._id;
+                    
+                    res.redirect('/web/home');
                 }else{
-                    res.send({
-                        status: "FAIL",
-                        message: "Password doesn't match!",
-                        token: null,
-                    });
+                    res.redirect('back');
                 }
             });
         }else{
@@ -85,4 +79,4 @@ class UserController{
     
 }
 
-module.exports = UserController;
+module.exports = WebAuthController;

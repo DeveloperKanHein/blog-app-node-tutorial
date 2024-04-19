@@ -1,14 +1,14 @@
 const express = require('express');
 const ejs = require('ejs');
 var bodyParser = require('body-parser');
+var session = require('express-session');
+var flash = require('connect-flash');
 const mongoose = require('mongoose');
 const ApiRoute = require('./routes/api_routes');
+const WebRoute = require('./routes/web_routes');
 const AuthRoute = require('./routes/auth_routes');
 const Middleware = require('./middlewares/middleware');
 const UserController = require('./controller/user_controller');
-
-var cron = require('node-cron');
-const MyClass = require('./singleton/MyClass');
 
 
 const app = express();
@@ -21,8 +21,17 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
 app.use(bodyParser.json());
 
+app.use(session({
+    secret: 'Abc123!@#',
+    resave: true,
+    saveUninitialized: true
+  }));
+
+app.use(flash());
+
 app.use('/api/v1/', Middleware.checkUser, ApiRoute);
-app.use('/api/auth/v1/', AuthRoute);
+app.use('/auth/', AuthRoute);
+app.use('/web/', Middleware.checkWebUser, WebRoute);
 
 app.get('/', (req, res) => {
     res.render('index.ejs');

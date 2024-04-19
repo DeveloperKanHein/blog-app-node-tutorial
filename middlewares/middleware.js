@@ -21,6 +21,15 @@ class Middleware{
             else next();
         });
     }
+
+    static checkWebUser(req, res, next) {
+        if(req.session.auth){
+            // res.locals.name = req.session.name;
+            next();
+        }else{
+            return res.redirect('/auth/login');
+        }
+    }
 }
 
 module.exports = Middleware;

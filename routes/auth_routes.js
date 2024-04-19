@@ -1,8 +1,10 @@
 const express = require('express');
-const UserController = require('../controller/user_controller');
+const WebAuthController = require('../controller/web_auth_controller');
 const route = express.Router();
 
-route.post('/register', UserController.register);
-route.post('/login', UserController.login);
+route.get('/login', WebAuthController.viewLogin);
+route.post('/login', WebAuthController.login);
+route.get('/register', WebAuthController.viewRegister);
+route.post('/register', WebAuthController.register);
 
 module.exports = route;
