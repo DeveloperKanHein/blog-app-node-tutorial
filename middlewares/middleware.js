@@ -24,7 +24,8 @@ class Middleware{
 
     static checkWebUser(req, res, next) {
         if(req.session.auth){
-            // res.locals.name = req.session.name;
+            res.locals.name = req.session.name;
+            res.locals.userId = req.session.userId;
             next();
         }else{
             return res.redirect('/auth/login');
