@@ -1,7 +1,24 @@
 <%- include('main_features/head') %>
 
-    <h1>Welcome Blog Application</h1>
-    <%= name %>
-    <%= userId %>
+<div class="container m-5 p-5">
+    <div class="m-5 p-5">
+        <% for(var i = 0; i < blogs.length; i++){ %>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class="card-title"><%= blogs[i].title %></h5>
+                </div>
+                <div class="card-body">
+                  <p class="card-text"><%= blogs[i].description %></p>
+                  <p class="card-text"><small><%= blogs[i].user.name %></small></p>
+                  <% if(userId == blogs[i].user._id ){ %>
+                    <a href="/web/blog-edit/<%= blogs[i]._id %>" class="btn btn-primary">Edit</a>
+                  <% } %>
+                </div>
+            </div>
+        <% } %>
+        
+    </div>
+    
+</div>
 
 <%- include('main_features/footer') %>

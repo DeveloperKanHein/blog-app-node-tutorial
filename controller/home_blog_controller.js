@@ -1,7 +1,9 @@
+const Blog = require("../models/blog");
+
 class HomeBlogController{
     static async home(req, res) {
-
-        res.render('home.ejs');
+        const blogs = await Blog.find().populate('user');
+        res.render('home.ejs', { blogs });
     }
 }
 

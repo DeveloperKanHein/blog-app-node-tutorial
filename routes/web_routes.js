@@ -7,5 +7,7 @@ const route = express.Router();
 route.get('/home', HomeBlogController.home);
 route.get('/create-blog', WebBlogController.create);
 route.post('/blog', WebBlogController.store);
+route.get('/blog-edit/:id', WebBlogController.edit);
+route.post('/blog-update', WebBlogController.update);
 
 module.exports = route;
