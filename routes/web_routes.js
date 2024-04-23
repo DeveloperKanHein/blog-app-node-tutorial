@@ -9,5 +9,6 @@ route.get('/create-blog', WebBlogController.create);
 route.post('/blog', WebBlogController.store);
 route.get('/blog-edit/:id', WebBlogController.edit);
 route.post('/blog-update', WebBlogController.update);
+route.get('/blog-delete/:id', WebBlogController.delete);
 
 module.exports = route;

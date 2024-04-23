@@ -16,10 +16,15 @@ class WebBlogController{
         try{
             const isSave = await blog.save();
             if(isSave){
-                res.send("SUCCESS");
+                req.flash('success', 'New blog is created successfully.');
+                res.redirect('/web/home');
+            }else{
+                req.flash('success', 'New blog can not be created!!!');
+                res.redirect('/web/home');
             }
         }catch(e){
-            res.send("ERROR");
+            req.flash('success', 'New blog can not be created!!!');
+            res.redirect('/web/home');
         }
     }
 
@@ -34,14 +39,32 @@ class WebBlogController{
         try{
             const isSave = await blog.save();
             if(isSave){
+                req.flash('success', 'Blog is updated successfully.');
                 res.redirect('/web/home');
             }else{
-                res.send("ERROR");
+                req.flash('success', 'New blog can not be updated!!!');
+            res.redirect('/web/home');
             }
         }catch(e){
-            res.send("ERROR");
+            req.flash('success', 'New blog can not be updated!!!');
+            res.redirect('/web/home');
         }
     }
-    static async delete(req, res){}
+    static async delete(req, res){
+        const blog = await Blog.findById(req.params.id);
+        try{
+            const isDelete = await blog.deleteOne();
+            if(isDelete){
+                req.flash('success', 'Blog is deleted successfully.');
+                res.redirect('/web/home');
+            }else{
+                req.flash('success', 'New blog can not be deleted!!!');
+                res.redirect('/web/home');
+            }
+        }catch(e){
+            req.flash('success', 'New blog can not be deleted!!!');
+            res.redirect('/web/home');
+        }
+    }
 }
 module.exports = WebBlogController;
