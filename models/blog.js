@@ -5,6 +5,9 @@ const BlogSchema = new mongoose.Schema({
     title: { type: String, default: null},
     description: { type: String, default: null },
     createAt: { type: Date, default: Date.now },
+    likes: [
+      { type: mongoose.Schema.Types.ObjectId, ref: 'user'}
+    ],
   });
   
   const Blog = mongoose.model('blog', BlogSchema);

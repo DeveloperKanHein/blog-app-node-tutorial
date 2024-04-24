@@ -1,0 +1,18 @@
+<%- include('main_features/head') %>
+
+
+<div class="container m-5 p-5">
+    <div class="m-5 p-5">
+        <% for(var i = 0; i < likes.length; i++){ %>
+            <div class="card mb-3">
+                <div class="card-body">
+                  <p class="card-text"><%= likes[i].name %></p>
+                </div>
+            </div>
+        <% } %>
+       
+    </div>
+    
+</div>
+
+<%- include('main_features/footer') %>

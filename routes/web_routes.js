@@ -11,4 +11,8 @@ route.get('/blog-edit/:id', WebBlogController.edit);
 route.post('/blog-update', WebBlogController.update);
 route.get('/blog-delete/:id', WebBlogController.delete);
 
+route.get('/like/:id', HomeBlogController.like);
+route.get('/unlike/:id/', HomeBlogController.unlike);
+route.get('/liked-users/:id', HomeBlogController.likedUsers);
+
 module.exports = route;

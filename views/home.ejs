@@ -12,8 +12,16 @@
                 <div class="card-body">
                   <p class="card-text"><%= blogs[i].description %></p>
                   <p class="card-text"><small><%= blogs[i].user.name %></small></p>
+                  <% if(blogs[i].likes.includes(userId)){ %>
+                    <a href="/web/unlike/<%= blogs[i]._id %>" class="btn btn-primary">Unlike</a>    
+                  <% }else{ %>
+                    <a href="/web/like/<%= blogs[i]._id %>" class="btn btn-primary">Like</a> 
+                  <% } %>
+
+                  <span class="mr-5 ml-2 mr-5"><a href="/web/liked-users/<%= blogs[i]._id %>"><%= blogs[i].likes.length %></a></span>
+
                   <% if(userId == blogs[i].user._id ){ %>
-                    <a href="/web/blog-edit/<%= blogs[i]._id %>" class="btn btn-primary">Edit</a> 
+                    <a href="/web/blog-edit/<%= blogs[i]._id %>" class="btn btn-primary ml-5">Edit</a> 
                     <a href="/web/blog-delete/<%= blogs[i]._id %>" class="btn btn-danger ml-2">Delete</a> 
                   <% } %>
                 </div>
