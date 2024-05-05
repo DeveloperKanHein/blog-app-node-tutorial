@@ -2,8 +2,10 @@ var jwt = require('jsonwebtoken');
 
 class Middleware{
     static checkUser(req, res, next) {
+        
         const secret = "123!@#ABC";
         const authHeader = req.headers["authorization"];
+
         if (!authHeader){
             return res.sendStatus(401);
         }

@@ -8,6 +8,7 @@ class WebBlogController{
     static async store(req, res){
         
         const blog = new Blog({
+            
             user: new ObjectId(req.session.userId),
             title: req.body.title,
             description: req.body.description,

@@ -1,0 +1,36 @@
+<%- include('main_features/head') %>
+
+<%- include('components/alert_bar') %>
+
+<div class="container mx-5 px-5 mt-3">
+    
+    <div class="mx-5 px-5">
+        <form action="/web/comment" method="post" class="mb-3">
+            <div class="mb-3">
+                <label for="comment_editor" class="form-label">Write your comment</label>
+                <textarea name="data" class="form-control" id="comment_editor" rows="3"></textarea>
+            </div>
+            <input type="hidden" name="blog" value="<%= blogId %>">
+            <input type="submit" value="Create" class="btn btn-sm btn-primary">
+        </form>
+        <hr/>
+
+        <% for(var i = 0; i < comments.length; i++){ %>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title"><%= comments[i].user.name %></h5>
+                    <p class="card-text"><%= comments[i].data %></p>
+                    <% if(userId == comments[i].user._id){ %>
+                    <a href="#" class="btn btn-primary">Edit</a>
+                    <a href="#" class="btn btn-danger">Delete</a>
+                    <% } %>
+                  </div>
+            </div>
+        <% } %>
+
+
+    </div>
+    
+</div>
+
+<%- include('main_features/footer') %>
