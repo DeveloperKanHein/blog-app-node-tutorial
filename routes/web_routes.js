@@ -18,7 +18,6 @@ route.get('/liked-users/:id', HomeBlogController.likedUsers);
 
 route.get('/comments/:id', CommentController.all);
 route.post('/comment', CommentController.store);
-// route.get('/comments', CommentController.all);
-// route.get('/comments', CommentController.all);
-
+route.post('/update-comment', CommentController.update);
+route.get('/delete-comment/:id', CommentController.delete);
 module.exports = route;

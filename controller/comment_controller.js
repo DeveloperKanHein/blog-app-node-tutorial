@@ -1,3 +1,4 @@
+const res_helper = require("../helper/res_helper");
 const Comment = require("../models/comment");
 const ObjectId =require("mongoose").Types.ObjectId;
 
@@ -27,34 +28,44 @@ class CommentController{
             res.redirect('back');
         }
     }
-    static async edit(req, res){}
+
     static async update(req, res){
-        const comment = await Comment.findById(req.body.id);
-        comment.data = req.body.data;
-        try{
-            const isSave = await comment.save();
-            if(isSave){
-                res.send("Success");
-            }else{
-                res.send("ERROR");
+        const comment = await Comment.findById(req.body.commentId);
+        
+        if(comment.user == req.session.userId){
+            comment.data = req.body.data;
+            try{
+                const isSave = await comment.save();
+                if(isSave){
+                    req.flash('success', "Comment is updated successfully :)");
+                    res.redirect('back');
+                }else{
+                    req.flash('success', "Comment cannot be updated :(");
+                    res.redirect('back')
+                }
+            }catch(e){
+                req.flash('success', "Comment cannot be updated :(");
+                res.redirect('back')
             }
-        }catch(e){
-            console.log(e);
-            res.send(e);
+        }else{
+            res_helper(res, null, "Acesss Denied");
         }
     }
     static async delete(req, res){
-        const comment = await Comment.findById(req.params.id);
+        
         try{
+            const comment = await Comment.findOne({ _id: req.params.id, user: req.session.userId});
             const isDeleted = await comment.deleteOne();
             if(isDeleted){
-                res.send("Success");
+                req.flash('success', "Comment is deleted successfully :)");
+                res.redirect('back');
             }else{
-                res.send("ERROR");
+                req.flash('success', "Comment cannot be deleted :(");
+                res.redirect('back');
             }
         }catch(e){
-            console.log(e);
-            res.send(e);
+            req.flash('success', "Comment cannot be deleted :(");
+            res.redirect('back');
         }
     }
 }

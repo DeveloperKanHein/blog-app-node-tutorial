@@ -9,6 +9,9 @@ const WebRoute = require('./routes/web_routes');
 const AuthRoute = require('./routes/auth_routes');
 const Middleware = require('./middlewares/middleware');
 const UserController = require('./controller/user_controller');
+const res_helper = require('./helper/res_helper');
+const Blog = require('./models/blog');
+const mail_helper = require('./helper/mail_helper');
 
 
 const app = express();
@@ -36,6 +39,21 @@ app.use('/web/', Middleware.checkWebUser, WebRoute);
 app.get('/', (req, res) => {
     res.render('index.ejs');
 });
+
+app.get('/likes/:id', async (req, res) => {
+    const blog = await Blog.findById(req.params.id);
+    res.send({ likes: blog.likes});
+});
+
+// app.get('/blogs', async (req, res) => {
+//     try{
+//         const blogs = await Blog.find().populate('friend');
+//         res_helper(res, blogs, "Blog data are collected successfully");
+//     }catch(e){
+//         mail_helper('developer.kanhein@gmail.com','Blog API ERROR', `${e}`);
+//         res_helper(res, null, "Blog data has error", false);
+//     }
+// });
 
 //Web Socket
 app.ws('/chat', function(ws, req) {

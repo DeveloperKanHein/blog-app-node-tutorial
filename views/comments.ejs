@@ -5,13 +5,14 @@
 <div class="container mx-5 px-5 mt-3">
     
     <div class="mx-5 px-5">
-        <form action="/web/comment" method="post" class="mb-3">
+        <form action="/web/comment" method="post" class="mb-3" id="commentFormId">
             <div class="mb-3">
                 <label for="comment_editor" class="form-label">Write your comment</label>
                 <textarea name="data" class="form-control" id="comment_editor" rows="3"></textarea>
             </div>
             <input type="hidden" name="blog" value="<%= blogId %>">
-            <input type="submit" value="Create" class="btn btn-sm btn-primary">
+            <input type="hidden" name="commentId" id="commentId">
+            <input type="submit" value="Create" id="submit_btn" class="btn btn-sm btn-primary">
         </form>
         <hr/>
 
@@ -21,8 +22,8 @@
                     <h5 class="card-title"><%= comments[i].user.name %></h5>
                     <p class="card-text"><%= comments[i].data %></p>
                     <% if(userId == comments[i].user._id){ %>
-                    <a href="#" class="btn btn-primary">Edit</a>
-                    <a href="#" class="btn btn-danger">Delete</a>
+                    <a href="#" class="btn btn-primary" onclick="onEdit('<%= comments[i]._id%>', '<%= comments[i].data%>' )">Edit</a>
+                    <a href="/web/delete-comment/<%= comments[i]._id %>" class="btn btn-danger">Delete</a>
                     <% } %>
                   </div>
             </div>
@@ -32,5 +33,18 @@
     </div>
     
 </div>
+
+<script>
+    function onEdit(commentId, data){
+        var comment = document.querySelector("#comment_editor");
+        var commentInput = document.querySelector("#commentId");
+        var submitBtn = document.querySelector('#submit_btn');
+        submitBtn.value = "Update";
+        commentInput.value = commentId;
+        comment.innerHTML = data;
+        var formControl = document.querySelector('#commentFormId');
+        formControl.action = "/web/update-comment";
+    }
+</script>
 
 <%- include('main_features/footer') %>
